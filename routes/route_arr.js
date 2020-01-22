@@ -94,19 +94,21 @@ route.post('/routine', auth, async (req, res) => {
              }
         else
             {
-                let index=topic.topic.indexOf(req.body.topic)
+             daily=dailies
+            for(i in req.body.topic){
+                let index=topic.topic.indexOf(req.body.topic[i])
+                console.log(index)
                 if(index>0)
-                dailies.topic_cover[index]=1
-                console.log(dailies.topic_cover[index])
-                daily=dailies
+                daily.topic_cover.splice(index,1,true)
+                 }
             }
         await daily.save()
         await topic.up()
-        res.status(200).json({message:"saved"})
+        res.status(200)
     }
     catch (e) {
         console.log(e)
-        res.status(201).json({message:"unsuccessfull"})
+        res.status(201)
     }
 })
 route.post('/logout', auth, async (req, res) => {
