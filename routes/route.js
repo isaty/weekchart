@@ -5,9 +5,7 @@ const topics = require('../models/topic')
 const Daily = require('../models/daily')
 const auth = require('../middleware/auth')
 const dateTime = require('../dateTime')
-route.get('/', (req, res) => {
-    res.json({ message: "Welcome" })
-})
+
 route.post('/user', async (req, res) => {
     const user = new User(req.body)
     console.log(req.body)
@@ -122,6 +120,9 @@ route.post('/logout', auth, async (req, res) => {
     } catch (e) {
         res.json({ e })
     }
+})
+route.get('/',(req,res)=>{
+    res.render('index')
 })
 
 module.exports = route
