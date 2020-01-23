@@ -8,5 +8,6 @@ const dailySchema = new mongoose.Schema({
     week: { type: Number, required: true },
     topic_cover: { type: Array },
 })
+
 const Daily = new mongoose.model('daily', dailySchema)
 module.exports = Daily

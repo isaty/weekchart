@@ -1,6 +1,7 @@
-var p;
+var p
+var week
 $.ajax({
-  headers: { 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3MGMyM2FiNGRiYTJhODA2NTBlYWQiLCJpYXQiOjE1Nzk2MTczMjV9.eaHnVDFoKfCV3oj2G9DFsSLsiJJGjLZvX-szyMr4Q9w' },
+  headers: { 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3ZTQxN2UwZTQ0ODBmOTgxNWNhNTAiLCJpYXQiOjE1Nzk2NzI2NDF9.kvlEVOhfxNOGBv69NxrIlkDhcFI4jZiB_qAs4tj6CMA' },
   url: 'topics',
   type: 'GET',
   success: function (data) {
@@ -17,8 +18,8 @@ $.ajax({
         "</tr>"
     }
     p = i
-
-    call_next()
+    week=data.week
+    call_next(0)
   },
   error: function (error) {
     console.log(error)
@@ -32,14 +33,21 @@ function match(data, i) {
   }
   return false
 }
-function call_next() {
+function call_next(change) {
+  let t=week+change
+  if(week<t||t<1)
+  t=week
+  let limit
+  if(change!=0 && t<week)
+  limit=6
+  else 
+  limit=new Date().getDay()
   $.ajax({
-    headers: { 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3MGMyM2FiNGRiYTJhODA2NTBlYWQiLCJpYXQiOjE1Nzk2MTczMjV9.eaHnVDFoKfCV3oj2G9DFsSLsiJJGjLZvX-szyMr4Q9w' },
-    url: 'routine',
+    headers: { 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3ZTQxN2UwZTQ0ODBmOTgxNWNhNTAiLCJpYXQiOjE1Nzk2NzI2NDF9.kvlEVOhfxNOGBv69NxrIlkDhcFI4jZiB_qAs4tj6CMA' },
+    url: 'routine/'+t,
     type: 'GET',
     success: function (data) {
-      const len = data.data.length
-      for (i = 0; i <= new Date().getDay(); i++) {
+      for (i = 0; i <= limit; i++) {
         let index = match(data.data, i)
         if (index) {
           for (j = 0; j <= p; j++) {
@@ -70,7 +78,7 @@ function call_next() {
     const id=this.id
      $('#'+this.id).off('click')
     $.ajax({
-      headers:{'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3MGMyM2FiNGRiYTJhODA2NTBlYWQiLCJpYXQiOjE1Nzk2MTczMjV9.eaHnVDFoKfCV3oj2G9DFsSLsiJJGjLZvX-szyMr4Q9w'},
+      headers:{'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3ZTQxN2UwZTQ0ODBmOTgxNWNhNTAiLCJpYXQiOjE1Nzk2NzI2NDF9.kvlEVOhfxNOGBv69NxrIlkDhcFI4jZiB_qAs4tj6CMA'},
       url:'routine',
       type:'POST',
       data:{topic},
@@ -83,5 +91,11 @@ function call_next() {
       }
     })
 })
-
 }
+$('#left').on('click',function(){
+  call_next(-1)
+  // console.log(week-1)
+})
+$('#right').on('click',function(){
+  call_next(1)
+})

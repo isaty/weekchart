@@ -34,18 +34,6 @@ const topicSchema = new mongoose.Schema({
         await daily.deleteMany({'topic_rel':topic._id})
         next()
     })
-    // topicSchema.methods.toJSON=function(){
-    //     const topic=this
-    //     const topicobj=topic.toObject()
-    // delete topicobj.createdAt
-    // delete topicobj.updatedAt
-    // delete topicobj.week
-    // delete topicobj.day
-    // delete topicobj.owner
-    // delete topicobj._id
-    // delete topicobj._v
-
-    // }
 topicSchema.methods.findTopic = async function (text) {
     const t = []
     const topic = this

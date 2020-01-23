@@ -23,7 +23,7 @@ route.post('/user', async (req, res) => {
 route.get('/topics',auth,async(req,res)=>{
     try {
         const topic = await topics.findOne({ owner: req.user._id })
-        res.json({data:topic.topic}) 
+        res.json({data:topic.topic,week:topic.week}) 
     }
      catch (e) { 
        console.log(e)
@@ -67,10 +67,11 @@ route.post('/login', async (req, res) => {
         res.json({ e })
     }
 })
-route.get('/routine', auth, async (req, res) => {
+route.get('/routine/:week', auth, async (req, res) => {
+    
     const topic = await topics.findOne({ owner: req.user._id })
 
-    const week = dateTime.week(topic.createdAt) + 1
+    const week = req.params.week
     const daily = await Daily.find({ owner: req.user._id, week })
     await topic.up()
     res.json({ data: daily })
@@ -78,6 +79,8 @@ route.get('/routine', auth, async (req, res) => {
 })
 route.post('/routine', auth, async (req, res) => {
     try {
+        
+        let daily
         const topic = await topics.findOne({ owner: req.user._id })
         req.body.day = new Date().getDay()
         req.body.week = topic.week + dateTime.week(topic.createdAt)
@@ -96,11 +99,11 @@ route.post('/routine', auth, async (req, res) => {
             {
                 let index=topic.topic.indexOf(req.body.topic)
                 if(index>0)
-                dailies.topic_cover[index]=1
-                console.log(dailies.topic_cover[index])
-                daily=dailies
+                dailies.topic_cover[index]=Boolean(true)
+                 daily=dailies   
+                daily.markModified('topic_cover')    
             }
-        await daily.save()
+            await daily.save()
         await topic.up()
         res.status(200).json({message:"saved"})
     }
@@ -120,4 +123,5 @@ route.post('/logout', auth, async (req, res) => {
         res.json({ e })
     }
 })
+
 module.exports = route
