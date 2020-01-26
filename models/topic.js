@@ -25,8 +25,15 @@ const topicSchema = new mongoose.Schema({
     })
     topicSchema.methods.up=async function(){
         const topic =this
-        topic.day=new Date().getDay()
+        const day=new Date().getDay()
+        const change=dateTime.week(topic.createdAt)
+        if(change!=0)
         topic.week=topic.week+dateTime.week(topic.createdAt)
+        else if(topic.day!=day && day==0)
+        {topic.week=1+topic.week
+        console.log(topic.week)
+        }
+        topic.day=day
         await topic.save()
     }
     topicSchema.pre('remove',async function(next){
