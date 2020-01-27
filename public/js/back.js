@@ -1,7 +1,7 @@
 var p
 var week
 $.ajax({
-  headers: { 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3ZTQxN2UwZTQ0ODBmOTgxNWNhNTAiLCJpYXQiOjE1Nzk2NzI2NDF9.kvlEVOhfxNOGBv69NxrIlkDhcFI4jZiB_qAs4tj6CMA' },
+  headers: { 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3MGMyM2FiNGRiYTJhODA2NTBlYWQiLCJpYXQiOjE1Nzk2MTczMjV9.eaHnVDFoKfCV3oj2G9DFsSLsiJJGjLZvX-szyMr4Q9w' },
   url: 'topics',
   type: 'GET',
   success: function (data) {
@@ -42,9 +42,8 @@ function call_next(change) {
   limit=6
   else 
   limit=new Date().getDay()
-  console.log(week)
   $.ajax({
-    headers: { 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3ZTQxN2UwZTQ0ODBmOTgxNWNhNTAiLCJpYXQiOjE1Nzk2NzI2NDF9.kvlEVOhfxNOGBv69NxrIlkDhcFI4jZiB_qAs4tj6CMA' },
+    headers: { 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3MGMyM2FiNGRiYTJhODA2NTBlYWQiLCJpYXQiOjE1Nzk2MTczMjV9.eaHnVDFoKfCV3oj2G9DFsSLsiJJGjLZvX-szyMr4Q9w' },
     url: 'routine/'+t,
     type: 'GET',
     success: function (data) {
@@ -53,7 +52,12 @@ function call_next(change) {
         if (index) {
           for (j = 0; j <= p; j++) {
             let day = data.data[index - 1].day
-            let top = data.data[index - 1].topic_cover[j]
+            //in case a data set wasn't avalable
+            try { 
+              let top = data.data[index - 1].topic_cover[j] 
+            } catch (e) {
+               let top = false 
+              }
             if (top == true)
              { $('#'+this.id).off('click')
                document.getElementById('col' + day + j).innerHTML = '<i class="fa fa-check"></i>'
@@ -79,12 +83,12 @@ function call_next(change) {
     }
   })
 
-  $('.row10').on('click',function(){
+  $(document).on('click','.row10',function(e){
     const topic=document.getElementById('col'+this.id).innerHTML
     const id=this.id
      $('#'+this.id).off('click')
     $.ajax({
-      headers:{'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3ZTQxN2UwZTQ0ODBmOTgxNWNhNTAiLCJpYXQiOjE1Nzk2NzI2NDF9.kvlEVOhfxNOGBv69NxrIlkDhcFI4jZiB_qAs4tj6CMA'},
+      headers:{'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3MGMyM2FiNGRiYTJhODA2NTBlYWQiLCJpYXQiOjE1Nzk2MTczMjV9.eaHnVDFoKfCV3oj2G9DFsSLsiJJGjLZvX-szyMr4Q9w'},
       url:'routine',
       type:'POST',
       data:{topic},
@@ -100,7 +104,6 @@ function call_next(change) {
 }
 $('#left').on('click',function(){
   call_next(-1)
-  console.log(week-1)
 })
 $('#right').on('click',function(){
   call_next(1)

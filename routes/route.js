@@ -11,9 +11,10 @@ route.post('/user', async (req, res) => {
     console.log(req.body)
     try {
         await user.save()
-        res.json({
-            message: "Successfull"
-        })
+        // res.json({
+        //     message: "Successfull"
+        // })
+        res.render('topic')
     } catch (e) {
         res.json({ message: e })
     }
@@ -62,9 +63,12 @@ route.post('/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generate()
-        res.json({ token })
+        res.cookie('token',token)
+        res.redirect('/')
+        // res.json({ token })
     } catch (e) {
-        res.json({ e })
+        // res.json({ e })
+        res.redirect('login')
     }
 })
 route.get('/routine/:week', auth, async (req, res) => {
@@ -79,7 +83,6 @@ route.get('/routine/:week', auth, async (req, res) => {
 })
 route.post('/routine', auth, async (req, res) => {
     try {
-        
         let daily
         const topic = await topics.findOne({ owner: req.user._id })
         req.body.day = new Date().getDay()
@@ -126,5 +129,13 @@ route.post('/logout', auth, async (req, res) => {
 route.get('/',(req,res)=>{
     res.render('index')
 })
-
+route.get('/login',(req,res)=>{
+    res.render('login')
+})
+route.get('/register',(req,res)=>{
+    res.render('register')
+})
+route.get('/topic',(req,res)=>{
+    res.render('topic')
+})
 module.exports = route
