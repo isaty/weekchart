@@ -1,7 +1,7 @@
 var p
 var week
 $.ajax({
-  headers: { 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3MGMyM2FiNGRiYTJhODA2NTBlYWQiLCJpYXQiOjE1Nzk2MTczMjV9.eaHnVDFoKfCV3oj2G9DFsSLsiJJGjLZvX-szyMr4Q9w' },
+  headers: { 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3ZTQxN2UwZTQ0ODBmOTgxNWNhNTAiLCJpYXQiOjE1Nzk2NzI2NDF9.kvlEVOhfxNOGBv69NxrIlkDhcFI4jZiB_qAs4tj6CMA' },
   url: 'topics',
   type: 'GET',
   success: function (data) {
@@ -44,7 +44,7 @@ function call_next(change) {
   limit=new Date().getDay()
   console.log(week)
   $.ajax({
-    headers: { 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3MGMyM2FiNGRiYTJhODA2NTBlYWQiLCJpYXQiOjE1Nzk2MTczMjV9.eaHnVDFoKfCV3oj2G9DFsSLsiJJGjLZvX-szyMr4Q9w' },
+    headers: { 'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3ZTQxN2UwZTQ0ODBmOTgxNWNhNTAiLCJpYXQiOjE1Nzk2NzI2NDF9.kvlEVOhfxNOGBv69NxrIlkDhcFI4jZiB_qAs4tj6CMA' },
     url: 'routine/'+t,
     type: 'GET',
     success: function (data) {
@@ -68,6 +68,11 @@ function call_next(change) {
           }
         }
       }
+      for(i=limit+1;i<=6;i++){
+        for(j=0;j<=p;j++){
+          document.getElementById('col' + i + j).innerHTML = ''
+        }
+      }
     },
     error: function (error) {
      console.log(error)
@@ -79,7 +84,7 @@ function call_next(change) {
     const id=this.id
      $('#'+this.id).off('click')
     $.ajax({
-      headers:{'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3MGMyM2FiNGRiYTJhODA2NTBlYWQiLCJpYXQiOjE1Nzk2MTczMjV9.eaHnVDFoKfCV3oj2G9DFsSLsiJJGjLZvX-szyMr4Q9w'},
+      headers:{'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTI3ZTQxN2UwZTQ0ODBmOTgxNWNhNTAiLCJpYXQiOjE1Nzk2NzI2NDF9.kvlEVOhfxNOGBv69NxrIlkDhcFI4jZiB_qAs4tj6CMA'},
       url:'routine',
       type:'POST',
       data:{topic},

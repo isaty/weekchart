@@ -21,6 +21,8 @@ route.post('/user', async (req, res) => {
 route.get('/topics',auth,async(req,res)=>{
     try {
         const topic = await topics.findOne({ owner: req.user._id })
+        await topic.up()
+
         res.json({data:topic.topic,week:topic.week}) 
     }
      catch (e) { 

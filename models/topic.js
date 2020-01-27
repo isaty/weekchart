@@ -29,7 +29,7 @@ const topicSchema = new mongoose.Schema({
         const change=dateTime.week(topic.createdAt)
         if(change!=0)
         topic.week=topic.week+dateTime.week(topic.createdAt)
-        else if(topic.day!=day && day==0)
+        else if(topic.day!=day && day<topic.day)
         {topic.week=1+topic.week
         console.log(topic.week)
         }
